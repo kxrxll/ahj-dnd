@@ -1,4 +1,4 @@
-import Popover from './Popover';
+import Board from './Board';
 
-const popover = new Popover(document.querySelector('body'));
-popover.bindToDOM();
+const board = new Board(document.querySelector('.trello'));
+board.init();
