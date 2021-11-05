@@ -29,7 +29,7 @@ export default class Board {
       ghostEl.style.left = `${evt.pageX - ghostEl.offsetWidth / 2}px`;
       ghostEl.style.top = `${evt.pageY - ghostEl.offsetHeight / 2}px`;
     });
-    this.board.addEventListener('mousemove', (evt) => {
+    this.board.closest('body').addEventListener('mousemove', (evt) => {
       evt.preventDefault();
       if (!draggedEl) {
         return;
@@ -37,7 +37,7 @@ export default class Board {
       ghostEl.style.left = `${evt.pageX - ghostEl.offsetWidth / 2}px`;
       ghostEl.style.top = `${evt.pageY - ghostEl.offsetHeight / 2}px`;
     });
-    this.board.addEventListener('mouseup', (evt) => {
+    this.board.closest('body').addEventListener('mouseup', (evt) => {
       if (!draggedEl) {
         return;
       }
@@ -45,6 +45,18 @@ export default class Board {
       const closest = document.elementFromPoint(evt.clientX, evt.clientY);
       if (closest.classList.contains('column')) {
         closest.appendChild(draggedEl, closest);
+        document.body.removeChild(ghostEl);
+        ghostEl = null;
+        draggedEl = null;
+        saveState(this.board);
+      } else
+      if (evt.target.closest('.column')) {
+        evt.target.closest('.column').appendChild(draggedEl);
+        document.body.removeChild(ghostEl);
+        ghostEl = null;
+        draggedEl = null;
+        saveState(this.board);
+      } else {
         document.body.removeChild(ghostEl);
         ghostEl = null;
         draggedEl = null;
